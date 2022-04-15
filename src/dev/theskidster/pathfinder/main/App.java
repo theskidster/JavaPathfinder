@@ -34,13 +34,7 @@ class App {
     
     private PathFinder pf = new PathFinder();
     
-    int[][] map = {
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0},
-        {0, 1, 0, 0, 0},
-        {0, 1, 0, 0, 0},
-    };
+    Maze maze = new Maze("maze1.txt");
     
     Point start = new Point(0, 0, null);
     Point end   = new Point(3, 4, null);
@@ -48,7 +42,7 @@ class App {
     App() {
         jPanel.add(canvas);
         
-        maxLength = (map[0].length > map.length) ? map[0].length : map.length;
+        maxLength = (maze.cells[0].length > maze.cells.length) ? maze.cells[0].length : maze.cells.length;
         scale     = (int) (Math.floor(HEIGHT / maxLength) * 0.9f);
         xOffset   = (maxLength * scale) / 4;
         
@@ -60,7 +54,7 @@ class App {
         jFrame.setVisible(true);
         
         canvas.setIgnoreRepaint(true);
-        canvas.setBounds(0, 0, map[0].length * scale, map.length * scale);
+        canvas.setBounds(0, 0, maze.cells[0].length * scale, maze.cells.length * scale);
         canvas.setBackground(Color.GRAY);
         canvas.createBufferStrategy(3);
         bs = canvas.getBufferStrategy();
@@ -69,28 +63,16 @@ class App {
     }
     
     void loop() {
-        List<Point> path = pf.findPath(map, start, end);
-        
-        
+        List<Point> path = pf.findPath(maze.cells, start, end);
         
         while(Thread.currentThread().isAlive()) {
             g = (Graphics2D) bs.getDrawGraphics();
-            g.clearRect(0, 0, map[0].length * scale, map.length * scale);
+            g.clearRect(0, 0, maze.cells[0].length * scale, maze.cells.length * scale);
             
-            for(int y = 0; y < 5; y++) {
-                System.out.print(  map[0][y] + ", ");
-                System.out.print(  map[1][y] + ", ");
-                System.out.print(  map[2][y] + ", ");
-                System.out.print(  map[3][y] + ", ");
-                System.out.println(map[4][y]);
-            }
-            System.out.println();
-            
-            /*
-            for(int y = 0; y < maxLength; y++) {
-                for(int x = 0; x < maxLength; x++) {
+            for(int x = 0; x < maxLength; x++) {
+                for(int y = 0; y < maxLength; y++) {
                     try {
-                        int tileID = map[x][y];
+                        int tileID = maze.cells[x][y];
                         
                         if(x == start.x && y == start.y) {
                             g.setColor(Color.GREEN);
@@ -103,9 +85,7 @@ class App {
                         g.fillRect((x * scale) + xOffset, y * scale, scale, scale);
                     } catch(ArrayIndexOutOfBoundsException e) {}
                 }
-            }*/
-            
-            //System.exit(0);
+            }
             
             if(path != null) {
                 path.forEach(point -> {

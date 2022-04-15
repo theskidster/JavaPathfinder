@@ -35,7 +35,7 @@ class PathFinder {
         return neighbors;
     }
     
-    public List<Point> findPath(int[][] map, Point start, Point end) {
+    public List<Point> findPath(int[][] mazeCells, Point start, Point end) {
         boolean finished = false;
         List<Point> used = new ArrayList<>();
         
@@ -47,7 +47,7 @@ class PathFinder {
             for(int i = 0; i < used.size(); ++i) {
                 Point point = used.get(i);
                 
-                for(Point neighbor : findNeighbors(map, point)) {
+                for(Point neighbor : findNeighbors(mazeCells, point)) {
                     if(!used.contains(neighbor) && !newOpen.contains(neighbor)) {
                         newOpen.add(neighbor);
                     }
