@@ -60,9 +60,11 @@ class App {
     }
     
     void loop() {
-        List<Point> path = pf.findPath(maze);
-        
         while(Thread.currentThread().isAlive()) {
+            List<Point> path = pf.findPath(maze);
+            
+            //TODO: add dynamic maze editing w/ mouse cursor
+            
             g = (Graphics2D) bs.getDrawGraphics();
             g.clearRect(0, 0, maze.cells[0].length * scale, maze.cells.length * scale);
             
