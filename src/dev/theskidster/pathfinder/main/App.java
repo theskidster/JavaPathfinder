@@ -34,7 +34,7 @@ class App {
     
     private PathFinder pf = new PathFinder();
     
-    Maze maze = new Maze("maze2.txt");
+    Maze maze = new Maze("maze3.txt");
     
     App() {
         jPanel.add(canvas);
@@ -60,8 +60,34 @@ class App {
     }
     
     void loop() {
+        boolean ticked;
+        final double TARGET_DELTA = 1 / 30.0;
+        double prevTime = System.currentTimeMillis();
+        double currTime;
+        double delta = 0;
+        int count = 0;
+        
+        List<Point> path = null;
+        
         while(Thread.currentThread().isAlive()) {
-            List<Point> path = pf.findPath(maze);
+            currTime = System.currentTimeMillis() * 0.01f;
+            
+            delta += currTime - prevTime;
+            if(delta < TARGET_DELTA) delta = TARGET_DELTA;
+            prevTime = currTime;
+            ticked   = false;
+            
+            while(delta >= TARGET_DELTA) {
+                delta -= TARGET_DELTA;
+                ticked = true;
+                
+                count++;
+                
+                if(count == 60) { //only update on map change?
+                    count = 0;
+                    path  = pf.findPath(maze);
+                }
+            }
             
             //TODO: add dynamic maze editing w/ mouse cursor
             
@@ -96,6 +122,12 @@ class App {
             
             g.dispose();
             bs.show();
+            
+            if(!ticked) {
+                try {
+                    Thread.sleep(1);
+                } catch(InterruptedException e) {}
+            }
         }
     }
 
