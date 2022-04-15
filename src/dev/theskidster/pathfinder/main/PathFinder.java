@@ -12,17 +12,6 @@ import java.util.List;
  * @since  
  */
 class PathFinder {
-
-    int[][] map = {
-        {0, 0, 0, 0, 0},
-        {0, 0, 1, 0, 1},
-        {1, 0, 0, 1, 1},
-        {0, 0, 0, 1, 0},
-        {1, 1, 0, 0, 1},
-    };
-    
-    Point start = new Point(0, 0, null);
-    Point end   = new Point(3, 4, null);
     
     private boolean isWalkable(int[][] map, Point point) {
         if(point.y < 0 || point.y > map.length - 1) return false;
@@ -46,8 +35,45 @@ class PathFinder {
         return neighbors;
     }
     
-    public static List<Point> findPath(int[][] map, Point start, Point end) {
-        return null;
+    public List<Point> findPath(int[][] map, Point start, Point end) {
+        boolean finished = false;
+        List<Point> used = new ArrayList<>();
+        
+        used.add(start);
+        
+        while(!finished) {
+            List<Point> newOpen = new ArrayList<>();
+            
+            for(int i = 0; i < used.size(); ++i) {
+                Point point = used.get(i);
+                
+                for(Point neighbor : findNeighbors(map, point)) {
+                    if(!used.contains(neighbor) && !newOpen.contains(neighbor)) {
+                        newOpen.add(neighbor);
+                    }
+                }
+            }
+            
+            for(Point point : newOpen) {
+                used.add(point);
+                if(end.equals(point)) {
+                    finished = true;
+                    break;
+                }
+            }
+            
+            if(!finished && newOpen.isEmpty()) return null;
+        }
+        
+        List<Point> path = new ArrayList<>();
+        Point point      = used.get(used.size() - 1);
+        
+        while(point.prev != null) {
+            path.add(0, point);
+            point = point.prev;
+        }
+        
+        return path;
     }
     
 }

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -33,10 +34,21 @@ class App {
     
     private PathFinder pf = new PathFinder();
     
+    int[][] map = {
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+    };
+    
+    Point start = new Point(0, 0, null);
+    Point end   = new Point(3, 4, null);
+    
     App() {
         jPanel.add(canvas);
         
-        maxLength = (pf.map[0].length > pf.map.length) ? pf.map[0].length : pf.map.length;
+        maxLength = (map[0].length > map.length) ? map[0].length : map.length;
         scale     = (int) (Math.floor(HEIGHT / maxLength) * 0.9f);
         xOffset   = (maxLength * scale) / 4;
         
@@ -48,7 +60,7 @@ class App {
         jFrame.setVisible(true);
         
         canvas.setIgnoreRepaint(true);
-        canvas.setBounds(0, 0, pf.map[0].length * scale, pf.map.length * scale);
+        canvas.setBounds(0, 0, map[0].length * scale, map.length * scale);
         canvas.setBackground(Color.GRAY);
         canvas.createBufferStrategy(3);
         bs = canvas.getBufferStrategy();
@@ -57,19 +69,51 @@ class App {
     }
     
     void loop() {
+        List<Point> path = pf.findPath(map, start, end);
+        
+        
+        
         while(Thread.currentThread().isAlive()) {
             g = (Graphics2D) bs.getDrawGraphics();
-            g.clearRect(0, 0, pf.map[0].length * scale, pf.map.length * scale);
+            g.clearRect(0, 0, map[0].length * scale, map.length * scale);
             
-            for(int x = 0; x < maxLength; x++) {
-                for(int y = 0; y < maxLength; y++) {
+            for(int y = 0; y < 5; y++) {
+                System.out.print(  map[0][y] + ", ");
+                System.out.print(  map[1][y] + ", ");
+                System.out.print(  map[2][y] + ", ");
+                System.out.print(  map[3][y] + ", ");
+                System.out.println(map[4][y]);
+            }
+            System.out.println();
+            
+            /*
+            for(int y = 0; y < maxLength; y++) {
+                for(int x = 0; x < maxLength; x++) {
                     try {
-                        int tileID = pf.map[x][y];
-
-                        g.setColor((tileID == 0) ? Color.WHITE : Color.BLACK);
-                        g.fillRect((y * scale) + xOffset, x * scale, scale, scale);
+                        int tileID = map[x][y];
+                        
+                        if(x == start.x && y == start.y) {
+                            g.setColor(Color.GREEN);
+                        } else if(x == end.x && y == end.y) {
+                            g.setColor(Color.RED);
+                        } else {
+                            g.setColor((tileID == 0) ? Color.WHITE : Color.BLACK);
+                        }
+                        
+                        g.fillRect((x * scale) + xOffset, y * scale, scale, scale);
                     } catch(ArrayIndexOutOfBoundsException e) {}
                 }
+            }*/
+            
+            //System.exit(0);
+            
+            if(path != null) {
+                path.forEach(point -> {
+                    if(!point.equals(start) && !point.equals(end)) {
+                        g.setColor(Color.BLUE);
+                        g.fillRect((point.x * scale) + xOffset, point.y * scale, scale, scale);
+                    }
+                });
             }
             
             g.dispose();
