@@ -16,7 +16,7 @@ class PathFinder {
     private boolean isWalkable(int[][] map, Point point) {
         if(point.x < 0 || point.x > map[0].length - 1) return false;
         if(point.y < 0 || point.y > map.length - 1) return false;
-        return map[point.x][point.y] == 0;
+        return map[point.x][point.y] != 1;
     }
     
     private List<Point> findNeighbors(int[][] map, Point point) {
@@ -35,11 +35,11 @@ class PathFinder {
         return neighbors;
     }
     
-    public List<Point> findPath(int[][] mazeCells, Point start, Point end) {
+    public List<Point> findPath(Maze maze) {
         boolean finished = false;
         List<Point> used = new ArrayList<>();
         
-        used.add(start);
+        used.add(maze.start);
         
         while(!finished) {
             List<Point> newOpen = new ArrayList<>();
@@ -47,7 +47,7 @@ class PathFinder {
             for(int i = 0; i < used.size(); ++i) {
                 Point point = used.get(i);
                 
-                for(Point neighbor : findNeighbors(mazeCells, point)) {
+                for(Point neighbor : findNeighbors(maze.cells, point)) {
                     if(!used.contains(neighbor) && !newOpen.contains(neighbor)) {
                         newOpen.add(neighbor);
                     }
@@ -56,7 +56,7 @@ class PathFinder {
             
             for(Point point : newOpen) {
                 used.add(point);
-                if(end.equals(point)) {
+                if(maze.end.equals(point)) {
                     finished = true;
                     break;
                 }

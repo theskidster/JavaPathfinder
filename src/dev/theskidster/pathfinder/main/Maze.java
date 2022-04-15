@@ -15,6 +15,9 @@ import static javax.swing.Spring.width;
  */
 class Maze {
     
+    Point start;
+    Point end;
+    
     int width;
     int height;
     int[][] cells;
@@ -34,14 +37,11 @@ class Maze {
                 
                 for(int x = 0; x < width; x++) {
                     cells[x][y] = Integer.parseInt(sTokens[x]);
-                    System.out.print("(" + x + ", " + y + ")" + cells[x][y] + " ");
+                    
+                    if(cells[x][y] == 2)      start = new Point(x, y, null);
+                    else if(cells[x][y] == 3) end = new Point(x, y, null);
                 }
-                System.out.println();
             }
-            
-            System.out.println("END WORLD DATA");
-            System.out.println("");
-            
         } catch(IOException | NumberFormatException e) {
             System.err.println(e);
         }

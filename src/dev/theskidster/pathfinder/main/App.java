@@ -36,9 +36,6 @@ class App {
     
     Maze maze = new Maze("maze2.txt");
     
-    Point start = new Point(0, 0, null);
-    Point end   = new Point(5, 6, null);
-    
     App() {
         jPanel.add(canvas);
         
@@ -63,7 +60,7 @@ class App {
     }
     
     void loop() {
-        List<Point> path = pf.findPath(maze.cells, start, end);
+        List<Point> path = pf.findPath(maze);
         
         while(Thread.currentThread().isAlive()) {
             g = (Graphics2D) bs.getDrawGraphics();
@@ -74,9 +71,12 @@ class App {
                     try {
                         int tileID = maze.cells[x][y];
                         
-                        if(x == start.x && y == start.y)  g.setColor(Color.GREEN);
-                        else if(x == end.x && y == end.y) g.setColor(Color.RED);
-                        else                              g.setColor((tileID == 0) ? Color.WHITE : Color.BLACK);
+                        switch(tileID) {
+                            case 0 -> { g.setColor(Color.WHITE); }
+                            case 1 -> { g.setColor(Color.BLACK); }
+                            case 2 -> { g.setColor(Color.GREEN); }
+                            case 3 -> { g.setColor(Color.RED); }
+                        }
                         
                         g.fillRect((x * scale) + xOffset, y * scale, scale, scale);
                     } catch(ArrayIndexOutOfBoundsException e) {}
@@ -85,7 +85,7 @@ class App {
             
             if(path != null) {
                 path.forEach(point -> {
-                    if(!point.equals(start) && !point.equals(end)) {
+                    if(!point.equals(maze.start) && !point.equals(maze.end)) {
                         g.setColor(Color.BLUE);
                         g.fillRect((point.x * scale) + xOffset, point.y * scale, scale, scale);
                     }
