@@ -9,5 +9,11 @@ package dev.theskidster.pathfinder.main;
  * @since  
  */
 public class Main {
+    
+    public static void main(String args[]) {
+        
+        new App().loop();
+        
+    }
 
 }
