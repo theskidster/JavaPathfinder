@@ -14,9 +14,9 @@ import java.util.List;
 class PathFinder {
     
     private boolean isWalkable(int[][] map, Point point) {
-        if(point.y < 0 || point.y > map.length - 1) return false;
         if(point.x < 0 || point.x > map[0].length - 1) return false;
-        return map[point.y][point.x] == 0;
+        if(point.y < 0 || point.y > map.length - 1) return false;
+        return map[point.x][point.y] == 0;
     }
     
     private List<Point> findNeighbors(int[][] map, Point point) {

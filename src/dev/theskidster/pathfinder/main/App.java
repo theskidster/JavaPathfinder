@@ -34,10 +34,10 @@ class App {
     
     private PathFinder pf = new PathFinder();
     
-    Maze maze = new Maze("maze1.txt");
+    Maze maze = new Maze("maze2.txt");
     
     Point start = new Point(0, 0, null);
-    Point end   = new Point(3, 4, null);
+    Point end   = new Point(5, 6, null);
     
     App() {
         jPanel.add(canvas);
@@ -69,18 +69,14 @@ class App {
             g = (Graphics2D) bs.getDrawGraphics();
             g.clearRect(0, 0, maze.cells[0].length * scale, maze.cells.length * scale);
             
-            for(int x = 0; x < maxLength; x++) {
-                for(int y = 0; y < maxLength; y++) {
+            for(int y = 0; y < maxLength; y++) {
+                for(int x = 0; x < maxLength; x++) {
                     try {
                         int tileID = maze.cells[x][y];
                         
-                        if(x == start.x && y == start.y) {
-                            g.setColor(Color.GREEN);
-                        } else if(x == end.x && y == end.y) {
-                            g.setColor(Color.RED);
-                        } else {
-                            g.setColor((tileID == 0) ? Color.WHITE : Color.BLACK);
-                        }
+                        if(x == start.x && y == start.y)  g.setColor(Color.GREEN);
+                        else if(x == end.x && y == end.y) g.setColor(Color.RED);
+                        else                              g.setColor((tileID == 0) ? Color.WHITE : Color.BLACK);
                         
                         g.fillRect((x * scale) + xOffset, y * scale, scale, scale);
                     } catch(ArrayIndexOutOfBoundsException e) {}

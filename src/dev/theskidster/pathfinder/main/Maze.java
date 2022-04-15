@@ -26,16 +26,22 @@ class Maze {
             width  = Integer.parseInt(br.readLine());
             height = Integer.parseInt(br.readLine());
             
-            cells = new int[height][width];
+            cells = new int[width][height];
             
-            for(int row = 0; row < height; row++) {
+            for(int y = 0; y < height; y++) {
                 String sLine = br.readLine();
                 String[] sTokens = sLine.split(" ");
                 
-                for(int col = 0; col < width; col++) {                    
-                    cells[row][col] = Integer.parseInt(sTokens[col]);
+                for(int x = 0; x < width; x++) {
+                    cells[x][y] = Integer.parseInt(sTokens[x]);
+                    System.out.print("(" + x + ", " + y + ")" + cells[x][y] + " ");
                 }
+                System.out.println();
             }
+            
+            System.out.println("END WORLD DATA");
+            System.out.println("");
+            
         } catch(IOException | NumberFormatException e) {
             System.err.println(e);
         }
