@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.util.List;
 import javax.swing.JFrame;
@@ -17,7 +19,7 @@ import javax.swing.JPanel;
  * @author J Hoffman
  * @since  
  */
-class App {
+class App implements MouseListener {
     
     private final int WIDTH  = 640;
     private final int HEIGHT = 480;
@@ -60,6 +62,8 @@ class App {
     }
     
     void loop() {
+        canvas.addMouseListener(this);
+        
         boolean ticked;
         final double TARGET_DELTA = 1 / 30.0;
         double prevTime = System.currentTimeMillis();
@@ -129,6 +133,27 @@ class App {
                 } catch(InterruptedException e) {}
             }
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println(e.getX() + ", " + e.getY());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 
 }
