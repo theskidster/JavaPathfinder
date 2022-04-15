@@ -18,8 +18,11 @@ import javax.swing.JPanel;
  */
 class App {
     
-    private final int WIDTH  = 500;
-    private final int HEIGHT = 500;
+    private final int WIDTH  = 640;
+    private final int HEIGHT = 480;
+    private final int scale;
+    private final int maxLength;
+    private final int xOffset;
     
     private final JFrame jFrame = new JFrame("Java Pathfinder Example.");
     private final Canvas canvas = new Canvas();
@@ -33,16 +36,20 @@ class App {
     App() {
         jPanel.add(canvas);
         
+        maxLength = (pf.map[0].length > pf.map.length) ? pf.map[0].length : pf.map.length;
+        scale     = (int) (Math.floor(HEIGHT / maxLength) * 0.9f);
+        xOffset   = (maxLength * scale) / 4;
+        
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-        jFrame.setResizable(false);
+        jFrame.setResizable(true);
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
         
         canvas.setIgnoreRepaint(true);
-        canvas.setBounds(0, 0, WIDTH, HEIGHT);
-        canvas.setBackground(Color.WHITE);
+        canvas.setBounds(0, 0, pf.map[0].length * scale, pf.map.length * scale);
+        canvas.setBackground(Color.GRAY);
         canvas.createBufferStrategy(3);
         bs = canvas.getBufferStrategy();
         
@@ -52,14 +59,16 @@ class App {
     void loop() {
         while(Thread.currentThread().isAlive()) {
             g = (Graphics2D) bs.getDrawGraphics();
-            g.clearRect(0, 0, WIDTH, HEIGHT);
+            g.clearRect(0, 0, pf.map[0].length * scale, pf.map.length * scale);
             
-            for(int x = 0; x < pf.map.length; x++) {
-                for(int y = 0; y < pf.map.length; y++) {
-                    int tileID = pf.map[x][y];
-                    
-                    g.setColor((tileID == 0) ? Color.RED : Color.BLACK);
-                    g.fillRect(y * 20, x * 20, 20, 20);
+            for(int x = 0; x < maxLength; x++) {
+                for(int y = 0; y < maxLength; y++) {
+                    try {
+                        int tileID = pf.map[x][y];
+
+                        g.setColor((tileID == 0) ? Color.WHITE : Color.BLACK);
+                        g.fillRect((y * scale) + xOffset, x * scale, scale, scale);
+                    } catch(ArrayIndexOutOfBoundsException e) {}
                 }
             }
             

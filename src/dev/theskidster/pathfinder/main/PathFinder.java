@@ -46,4 +46,8 @@ class PathFinder {
         return neighbors;
     }
     
+    public static List<Point> findPath(int[][] map, Point start, Point end) {
+        return null;
+    }
+    
 }
