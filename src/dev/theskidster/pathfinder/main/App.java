@@ -34,7 +34,7 @@ class App {
     
     private PathFinder pf = new PathFinder();
     
-    Maze maze = new Maze("maze3.txt");
+    Maze maze = new Maze("maze4.txt");
     
     App() {
         jPanel.add(canvas);
