@@ -3,6 +3,7 @@ package dev.theskidster.pathfinder.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,6 +26,9 @@ class App {
     private final JPanel jPanel = (JPanel) jFrame.getContentPane();
     
     private final BufferStrategy bs;
+    private Graphics2D g;
+    
+    private PathFinder pf = new PathFinder();
     
     App() {
         jPanel.add(canvas);
@@ -38,7 +42,7 @@ class App {
         
         canvas.setIgnoreRepaint(true);
         canvas.setBounds(0, 0, WIDTH, HEIGHT);
-        canvas.setBackground(new Color(249, 249, 249));
+        canvas.setBackground(Color.WHITE);
         canvas.createBufferStrategy(3);
         bs = canvas.getBufferStrategy();
         
@@ -46,22 +50,22 @@ class App {
     }
     
     void loop() {
-        
-        
-        
-        /*
         while(Thread.currentThread().isAlive()) {
-            update();
-            draw();
-        }*/
-    }
-    
-    void update() {
-        
-    }
-    
-    void draw() {
-        
+            g = (Graphics2D) bs.getDrawGraphics();
+            g.clearRect(0, 0, WIDTH, HEIGHT);
+            
+            for(int x = 0; x < pf.map.length; x++) {
+                for(int y = 0; y < pf.map.length; y++) {
+                    int tileID = pf.map[x][y];
+                    
+                    g.setColor((tileID == 0) ? Color.RED : Color.BLACK);
+                    g.fillRect(y * 20, x * 20, 20, 20);
+                }
+            }
+            
+            g.dispose();
+            bs.show();
+        }
     }
 
 }
