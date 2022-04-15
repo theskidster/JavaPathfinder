@@ -20,11 +20,11 @@ class App {
     private final int WIDTH  = 500;
     private final int HEIGHT = 500;
     
-    private JFrame jFrame = new JFrame("Java Pathfinder Example.");
-    private Canvas canvas = new Canvas();
-    private JPanel jPanel = (JPanel) jFrame.getContentPane();
+    private final JFrame jFrame = new JFrame("Java Pathfinder Example.");
+    private final Canvas canvas = new Canvas();
+    private final JPanel jPanel = (JPanel) jFrame.getContentPane();
     
-    private BufferStrategy bs;
+    private final BufferStrategy bs;
     
     App() {
         jPanel.add(canvas);
@@ -48,6 +48,19 @@ class App {
     void loop() {
         
         
+        
+        /*
+        while(Thread.currentThread().isAlive()) {
+            update();
+            draw();
+        }*/
+    }
+    
+    void update() {
+        
+    }
+    
+    void draw() {
         
     }
 
